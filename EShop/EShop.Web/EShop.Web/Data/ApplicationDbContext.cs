@@ -1,4 +1,5 @@
 ﻿using EShop.Web.Models.DomainModels;
+using EShop.Web.Models.IdentityModels;
 using EShop.Web.Models.Relationship;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace EShop.Web.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<EShopApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -22,6 +23,11 @@ namespace EShop.Web.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<EShopApplicationUser>()
+            .HasOne(s => s.UserShoppingCart)
+            .WithOne(ad => ad.Owner)
+            .HasForeignKey<ShoppingCart>(ad => ad.OwnerId);
 
             builder.Entity<Product>()
                .Property(z => z.Id)

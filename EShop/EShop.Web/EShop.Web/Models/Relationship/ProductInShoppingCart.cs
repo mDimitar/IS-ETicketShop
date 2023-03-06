@@ -13,5 +13,7 @@ namespace EShop.Web.Models.Relationship
 
         public Guid ShoppingCartId { get; set; }
         public virtual ShoppingCart ShoppingCart { get; set; }
+
+        public int Quantity { get; set; }
     }
 }
