@@ -4,36 +4,22 @@ using EShop.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EShop.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230316082306_UpdateForeignKeyInProductInShoppingCart")]
+    partial class UpdateForeignKeyInProductInShoppingCart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.32")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("EShop.Web.Models.DomainModels.Order", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("OwnerId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OwnerId");
-
-                    b.ToTable("Orders");
-                });
 
             modelBuilder.Entity("EShop.Web.Models.DomainModels.Product", b =>
                 {
@@ -154,21 +140,6 @@ namespace EShop.Web.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("EShop.Web.Models.Relationship.ProductInOrder", b =>
-                {
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ProductId", "OrderId");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("ProductInOrders");
                 });
 
             modelBuilder.Entity("EShop.Web.Models.Relationship.ProductInShoppingCart", b =>
@@ -324,33 +295,11 @@ namespace EShop.Web.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("EShop.Web.Models.DomainModels.Order", b =>
-                {
-                    b.HasOne("EShop.Web.Models.IdentityModels.EShopApplicationUser", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId");
-                });
-
             modelBuilder.Entity("EShop.Web.Models.DomainModels.ShoppingCart", b =>
                 {
                     b.HasOne("EShop.Web.Models.IdentityModels.EShopApplicationUser", "Owner")
                         .WithOne("UserShoppingCart")
                         .HasForeignKey("EShop.Web.Models.DomainModels.ShoppingCart", "OwnerId");
-                });
-
-            modelBuilder.Entity("EShop.Web.Models.Relationship.ProductInOrder", b =>
-                {
-                    b.HasOne("EShop.Web.Models.DomainModels.Order", "UserOrder")
-                        .WithMany("ProductInOrders")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EShop.Web.Models.DomainModels.Product", "Product")
-                        .WithMany("ProductInOrders")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("EShop.Web.Models.Relationship.ProductInShoppingCart", b =>
