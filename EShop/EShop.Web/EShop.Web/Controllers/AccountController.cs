@@ -1,10 +1,8 @@
-﻿using EShop.Web.Models.DTO;
-using EShop.Web.Models.IdentityModels;
+﻿using EShop.Domain.DTO;
+using EShop.Domain.IdentityModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -40,7 +38,7 @@ namespace EShop.Web.Controllers
                 {
                     var user = new EShopApplicationUser
                     {
-                        FirstName = request.FirstName, 
+                        FirstName = request.FirstName,
                         LastName = request.LastName,
                         Address = request.Address,
                         UserName = request.Email,
@@ -49,7 +47,7 @@ namespace EShop.Web.Controllers
                         PhoneNumber = request.PhoneNumber,
                         EmailConfirmed = true,
                         PhoneNumberConfirmed = true,
-                        UserShoppingCart = new Models.DomainModels.ShoppingCart()
+                        UserShoppingCart = new EShop.Domain.DomainModels.ShoppingCart()
                     };
                     var result = await userManager.CreateAsync(user, request.Password);
                     if (result.Succeeded)

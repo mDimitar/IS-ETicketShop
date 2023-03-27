@@ -1,4 +1,4 @@
-﻿@model EShop.Web.Models.DTO.ShoppingCartDto
+﻿@model EShop.Domain.DTO.ShoppingCartDto
 
 
 <div class="container">
@@ -28,7 +28,7 @@
                         <td>@currentProduct.Quantity</td>
                         <td>@currentProduct.Product.ProductPrice</td>
                         <td>
-                            <a asp-controller="ShoppingCart" asp-action="Delete" asp-route-id="@currentProduct.Product.Id" class="btn btn-danger">Delete</a>
+                            <a asp-controller="ShoppingCart" asp-action="Delete" asp-route-id="@currentProduct.Id" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                 }
@@ -39,7 +39,7 @@
                     <th scope="col"></th>
                     <th scope="col"></th>
                     <th scope="col"></th>
-                    <th scope="col">@Model.TotalPrice</th>
+                    <th scope="col">@Model.TotalPrice ДЕН</th>
                 </tr>
             </tfoot>
         </table>
