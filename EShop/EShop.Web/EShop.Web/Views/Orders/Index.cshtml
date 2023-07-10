@@ -1,0 +1,25 @@
+﻿
+<div class="container w-75">
+    <h1>All Tickets Ordered</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Ticket Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Product Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.ProductsInUserOrders)
+            {
+                <tr>
+                    <th scope="row">@item.ProductName</th>
+                    <td>@item.ProductDescription</td>
+                    <td>@item.ProductPrice</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,33 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="container w-75">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Address</th>
+                <th scope="col">Role</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in ViewBag.users)
+            {
+                <tr>
+                    <th scope="row">@user.FirstName</th>
+                    <td>@user.LastName</td>
+                    <td>@user.Address</td>
+                    <td>STANDARD</td>
+                    <td>
+                        <a asp-controller="SwitchRoles" asp-action="ChangeRoleForm" asp-route-id="@user.Id" class="btn btn-danger">Change Role</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

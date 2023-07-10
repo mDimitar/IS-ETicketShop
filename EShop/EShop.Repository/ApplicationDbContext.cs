@@ -1,6 +1,7 @@
 ﻿using EShop.Domain.DomainModels;
 using EShop.Domain.IdentityModels;
 using EShop.Domain.Relationship;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,6 +23,14 @@ namespace EShop.Repository
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+
+            //seed roles
+            builder.Entity<IdentityRole>().HasData(
+               new IdentityRole { Id = "1", Name = "STANDARD", NormalizedName = "STANDARD" },
+               new IdentityRole { Id = "2", Name = "ADMIN", NormalizedName = "ADMIN" }
+           );
+
+
             base.OnModelCreating(builder);
 
             builder.Entity<Product>()

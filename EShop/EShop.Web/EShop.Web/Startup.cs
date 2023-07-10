@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,7 @@ namespace EShop.Web
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<EShopApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -57,7 +59,7 @@ namespace EShop.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -85,6 +87,26 @@ namespace EShop.Web
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
+            //seed roles db
+            //seed roles
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var roleManager =
+                    scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+                var roles = new[] { "ADMIN", "STANDARD" };
+                foreach (var role in roles)
+                {
+                    if (!await roleManager.RoleExistsAsync(role))
+                        await roleManager.CreateAsync(new IdentityRole(role));
+                }
+            }
+
+            //Stripe
+            StripeConfiguration.SetApiKey("sk_test_51NRIs8EfSldy4EcAUk4YM8J3KX878dkBJeV48ccMfkV0nqATYjctY5ngsTxZNbCe0AbL6ZwmATFNvLU74QwQEOIG00eC48EZCA");
+           
+
         }
     }
 }

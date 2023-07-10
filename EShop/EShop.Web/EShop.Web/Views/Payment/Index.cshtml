@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewData["Title"] = "Payment";
+}
+
+<div class="container">
+    <h3>Finishing your payment for:</h3>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Product Description</th>
+                <th scope="col">Product Price</th>
+                <th scope="col">Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in ViewBag.userProducts)
+            {
+                <tr>
+                    <td></td>
+                    <th scope="row">@product.Product.ProductName</th>
+                    <td>@product.Product.ProductDescription</td>
+                    <td>@product.Product.ProductPrice</td>
+                    <td>@product.Quantity</td>
+                </tr>
+            }
+    </table>
+
+
+
+
+    <div>
+        <form action="/Payment/Processing" method="POST">
+            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                    data-key="pk_test_51NRIs8EfSldy4EcALXxzeNng8jh5O7jGMITVx3rw6mv6WSuceS8k56v9lCGoC9kRgksUhigGG1COftq3xar1bUu600lHNlpgjx"
+                    data-amount="@ViewBag.price"
+                    data-name="ETicket Shop"
+                    data-description= "Payment for EShop Ticket"; 
+                    data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                    data-locale="auto"
+                    data-zip-code="true"
+                    data-label="Pay @ViewBag.price MKD">
+            </script>
+        </form>
+    </div>
+</div>
+

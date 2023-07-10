@@ -13,12 +13,15 @@ namespace EShop.Web.Controllers
     {
         private readonly UserManager<EShopApplicationUser> userManager;
         private readonly SignInManager<EShopApplicationUser> signInManager;
+        private readonly RoleManager<IdentityRole> roleManager;
         public AccountController(UserManager<EShopApplicationUser> userManager,
-            SignInManager<EShopApplicationUser> signInManager)
+            SignInManager<EShopApplicationUser> signInManager,
+            RoleManager<IdentityRole> roleManager)
         {
 
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.roleManager = roleManager;
         }
 
         [HttpGet, AllowAnonymous]
@@ -52,6 +55,10 @@ namespace EShop.Web.Controllers
                     var result = await userManager.CreateAsync(user, request.Password);
                     if (result.Succeeded)
                     {
+                        var standardRole = await roleManager.FindByNameAsync("STANDARD");
+                        
+                        await userManager.AddToRoleAsync(user, standardRole.Name);
+
                         return RedirectToAction("Login");
                     }
                     else
